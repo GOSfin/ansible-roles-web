@@ -1,7 +1,7 @@
 galaxy_info:
   author: Georges
   description: install apache and php on Alpine Linux with a test web app
-  ccompany: https://gosoft.fr 
+  company: https://gosoft.fr 
 
   license: MIT
 
