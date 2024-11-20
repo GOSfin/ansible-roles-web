@@ -1,0 +1,57 @@
+---
+# tasks file for web
+- name: install apache and php last version on Alpine
+    apk:
+      name: [apache2, php mysql]
+      state: present
+      update_cache: yes
+    when: ansible_facts['os_family'] == "Alpine"
+
+  - name: What is my inventory_hostname
+    debug: var={{inventory_hostname}}
+
+  - name: What is my ansible_hostname
+    debug: var={{ansible_hostname}}
+
+  - name: Give writable mode to http folder
+    file:
+      path: /var/www/html
+      state: directory
+      mode: '0755'
+
+  - name: remove default index.html
+    file:
+      path: /var/www/html/index.html
+      state: absent
+
+  - name: upload web app source
+    copy:
+      src: app/
+      dest: /var/www/html/
+
+  - name: deploy php database config
+    template:
+      src: "db-config.php.j2"
+      dest: "/var/www/html/db-config.php"
+
+  - name: ensure softlevel exists to use service 
+    copy:
+      content: ""
+      dest: /run/openrc/softlevel
+      force: false
+      group: sys
+      owner: root
+      mode: 0644
+  
+  - name: ensure apache service is start
+    become: true
+    service:
+      name: apache2
+      state: started
+      # enabled: yes
+    when: ansible_facts['os_family'] == "Alpine"
+    
+  - name: enable connection with remote database (RedHat os family) 
+    shell: setsebool -P httpd_can_network_connect_db 1
+    when: ansible_facts['os_family'] == "Alpine"
+    
