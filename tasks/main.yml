@@ -8,10 +8,10 @@
   when: ansible_facts['os_family'] == "Alpine"
 
 - name: What is my inventory_hostname
-  debug: var={{inventory_hostname}}
+  debug: var={{ inventory_hostname }}
 
 - name: What is my ansible_hostname
-  debug: var={{ansible_hostname}}
+  debug: var={{ ansible_hostname }}
 
 - name: Give writable mode to http folder
   file:
@@ -34,7 +34,7 @@
     src: "db-config.php.j2"
     dest: "/var/www/html/db-config.php"
 
-- name: ensure softlevel exists to use service 
+- name: ensure softlevel exists to use service
   copy:
     content: ""
     dest: /run/openrc/softlevel
@@ -42,7 +42,7 @@
     group: sys
     owner: root
     mode: 0644
-  
+
 - name: ensure apache service is start
   become: true
   service:
@@ -50,8 +50,8 @@
     state: started
     # enabled: yes
   when: ansible_facts['os_family'] == "Alpine"
-    
-- name: enable connection with remote database (RedHat os family) 
-  shell: setsebool -P httpd_can_network_connect_db 1
+
+- name: enable connection with remote database (RedHat os family)
+  command: setsebool -P httpd_can_network_connect_db 1
   when: ansible_facts['os_family'] == "Alpine"
-  
+

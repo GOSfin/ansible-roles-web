@@ -1,18 +1,14 @@
 galaxy_info:
   author: Georges
-  description: install apache and php on Alpine Linux with a test web app
-  company: https://gosoft.fr 
-
+  description: "install apache and php on Alpine Linux with a test web app"
+  company: "https://gosoft.fr"
   license: MIT
-
   min_ansible_version: 2.9
-
   platforms:
   - name: Alpinea
     versions:
       - 3.19
-
-  galaxy_tags: 
+  galaxy_tags:
     - web
     - apache
     - php
